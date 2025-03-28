@@ -1,0 +1,32 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif; /* Font family for the body */
+    margin: 0;
+    padding: 0; /* Reset padding */
+}
+
+/* Header Styles */
+header {
+    background-color: #333;
+    color: white; /* Text color */
+    padding: 20px;
+}
+
+/* Navigation Styles */
+nav {
+    margin-top: 10px;
+    /* Comment within navigation styles */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #222;
+    color: white; /* Footer text color */
+    padding: 10px;
+}
+
+/*
+ * Multi-line comment for a large block of text
+ * This is the footer section.
+ * More lines of comments can go here.
+ */
