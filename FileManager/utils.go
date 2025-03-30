@@ -1,4 +1,4 @@
-package filemanager
+package FileManager
 
 import (
 	"os"
