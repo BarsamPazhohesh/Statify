@@ -30,13 +30,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Create or overwrite the output markdown file
-	outputFile, err := filemanager.CreateOrTruncateFile("./Information.md")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer outputFile.Close() // Ensure file is closed after writing
+	outputPath := "Info.md"
 
+	// overwrite file with empty value
+	if err := filemanager.OverwriteFile(outputPath, []byte{}); err != nil {
+		log.Println("Error writing to file:", err)
+	}
 	// Generate and write analysis report for each file
 	for _, file := range analyzedFiles {
 		report := fmt.Sprintf(`## %v
@@ -63,7 +62,7 @@ func main() {
 		)
 
 		// Write report to the markdown file
-		if _, err := outputFile.WriteString(report); err != nil {
+		if err := filemanager.AppendFileString(outputPath, report); err != nil {
 			log.Println("Error writing to file:", err)
 		}
 	}
