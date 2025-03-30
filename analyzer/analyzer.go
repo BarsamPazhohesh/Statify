@@ -45,7 +45,7 @@ func AnalyzeSingleFile(metadata FileMetadata) (AnalyzeFileResult, error) {
 	// I have to track a lot of cases,
 	// and people often place comment symbols inside strings,
 	// like this in C: "/* *\" — which is not a comment.
-	source, err := filemanager.ReadEntireFile(metadata.Path)
+	source, err := filemanager.ReadFileString(metadata.Path)
 	if err != nil {
 		return analysis, err
 	}
@@ -57,7 +57,7 @@ func AnalyzeSingleFile(metadata FileMetadata) (AnalyzeFileResult, error) {
 
 	analysis.TotalSize = int64(utf8.RuneCountInString(source))
 	analysis.BlankLines = CountBlankLines(source)
-	analysis.CodeSize = analysis.TotalSize - analysis.CommentSize
+	analysis.CodeSize = analysis.TotalSize - (analysis.CommentSize + int64(analysis.BlankLines))
 
 	return analysis, nil
 }

@@ -171,12 +171,7 @@ func DetectMFileType(metadata FileMetadata) Language {
 	detectedType := Matlab
 	linesRead := 0
 
-	err := filemanager.ProcessFileByLine(metadata.Path, func(line string) error {
-		// Stop processing if we've read too many lines or already detected the type
-		if linesRead >= 20 || detectedType != Unknown {
-			return fmt.Errorf("stop processing")
-		}
-
+	err := filemanager.ReadLinesLimit(metadata.Path, 20, func(line string) error {
 		// Check for Objective-C patterns
 		for _, pattern := range objcPatterns {
 			if pattern.MatchString(line) {
