@@ -1,12 +1,12 @@
-package analyzer
+package Analyzer
 
 import (
-	"statfiy/filemanager"
+	"statfiy/FileManager"
 	"unicode/utf8"
 )
 
 // FileMetadata is a type alias for the file metadata from filemanager.
-type FileMetadata = filemanager.FileMetadata
+type FileMetadata = FileManager.FileMetadata
 
 // AnalyzeFileResult represents the result of analyzing a file.
 type AnalyzeFileResult struct {
@@ -45,7 +45,7 @@ func AnalyzeSingleFile(metadata FileMetadata) (AnalyzeFileResult, error) {
 	// I have to track a lot of cases,
 	// and people often place comment symbols inside strings,
 	// like this in C: "/* *\" — which is not a comment.
-	source, err := filemanager.ReadFileString(metadata.Path)
+	source, err := FileManager.ReadFileString(metadata.Path)
 	if err != nil {
 		return analysis, err
 	}

@@ -1,9 +1,9 @@
-package analyzer
+package Analyzer
 
 import (
 	"fmt"
 	"regexp"
-	"statfiy/filemanager"
+	"statfiy/FileManager"
 	"strings"
 )
 
@@ -171,7 +171,7 @@ func DetectMFileType(metadata FileMetadata) Language {
 	detectedType := Matlab
 	linesRead := 0
 
-	err := filemanager.ReadLinesLimit(metadata.Path, 20, func(line string) error {
+	err := FileManager.ReadLinesLimit(metadata.Path, 20, func(line string) error {
 		// Check for Objective-C patterns
 		for _, pattern := range objcPatterns {
 			if pattern.MatchString(line) {

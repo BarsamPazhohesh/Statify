@@ -1,4 +1,4 @@
-package analyzer
+package Analyzer
 
 import "regexp"
 

@@ -1,4 +1,4 @@
-package analyzer
+package Analyzer
 
 type commentRegexs struct {
 	BlankLine         string
