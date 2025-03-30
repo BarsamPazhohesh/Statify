@@ -88,3 +88,10 @@ func AppendFile(filePath string, data []byte) error {
 func AppendFileString(filePath string, data string) error {
 	return AppendFile(filePath, []byte(data))
 }
+
+func ErrorHandler(err error, errorMessage string) error {
+	if err != nil {
+		return fmt.Errorf("%v: %w", errorMessage, err)
+	}
+	return nil
+}
