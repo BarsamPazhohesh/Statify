@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"statfiy/analyzer"
-	"statfiy/filemanager"
+	"statfiy/Analyzer"
+	"statfiy/FileManager"
 )
 
 // Runs the program like: go run . --path sourceCode
@@ -19,13 +19,13 @@ func main() {
 	flag.Parse()
 
 	// Collect metadata from files in the specified codebase
-	files, err := filemanager.CollectFilesMetadata(*codebasePath)
+	files, err := FileManager.CollectFilesMetadata(*codebasePath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Analyze the collected files
-	analyzedFiles, err := analyzer.AnalyzeMultipleFiles(files)
+	analyzedFiles, err := Analyzer.AnalyzeMultipleFiles(files)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func main() {
 	outputPath := "Info.md"
 
 	// overwrite file with empty value
-	if err := filemanager.OverwriteFile(outputPath, []byte{}); err != nil {
+	if err := FileManager.OverwriteFile(outputPath, []byte{}); err != nil {
 		log.Println("Error writing to file:", err)
 	}
 	// Generate and write analysis report for each file
@@ -62,7 +62,7 @@ func main() {
 		)
 
 		// Write report to the markdown file
-		if err := filemanager.AppendFileString(outputPath, report); err != nil {
+		if err := FileManager.AppendFileString(outputPath, report); err != nil {
 			log.Println("Error writing to file:", err)
 		}
 	}
