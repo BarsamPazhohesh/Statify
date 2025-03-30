@@ -1,4 +1,4 @@
-# File Manager Documentation
+# Analyzer Documentation
 The **analyzer** package provides tools for analyzing source code files to extract useful insights like file language, total size, comment size, code size, and blank line count. It supports analyzing multiple files at once or individual files.
 
 ## Types
