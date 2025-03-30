@@ -5,6 +5,16 @@ import (
 	"os"
 )
 
+var errorMessages map[string]string
+
+func init() {
+	errorMessages = make(map[string]string)
+	errorMessages["OpenToAppend"] = "failed to open file for appending"
+	errorMessages["Append"] = "failed to append data to file"
+	errorMessages["OpenToOverwrite"] = "failed to open file for overwriting"
+	errorMessages["Write"] = "failed to write data to file"
+}
+
 // OverwriteFile writes data to a file, overwriting it if it exists.
 //
 // Arguments:
