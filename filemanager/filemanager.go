@@ -1,8 +1,6 @@
 package filemanager
 
 import (
-	"bufio"
-	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -70,64 +68,4 @@ func CollectFilesMetadata(rootDir string) ([]FileMetadata, error) {
 	}
 
 	return fileList, nil
-}
-
-// LineHandler is a callback function type for processing each line of text.
-type LineHandler func(line string) error
-
-// ProcessFileByLine reads a file line by line and applies a callback function to each line.
-//
-// Arguments:
-//   - filePath: The path to the file to be read.
-//   - handler: A callback function to process each line.
-//
-// Returns:
-//   - error: If reading or processing fails, an error is returned. Otherwise, nil.
-func ProcessFileByLine(filePath string, handler LineHandler) error {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %w", err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err := handler(scanner.Text()); err != nil {
-			return fmt.Errorf("error processing line: %w", err)
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("error reading file: %w", err)
-	}
-
-	return nil
-}
-
-// ReadEntireFile reads the entire contents of a file and returns it as a string.
-//
-// Arguments:
-//   - filePath: The path to the file to be read.
-//
-// Returns:
-//   - string: The full content of the file.
-//   - error: An error if reading the file fails.
-func ReadEntireFile(filePath string) (string, error) {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
-}
-
-// CreateOrTruncateFile opens a file for reading and writing, truncating it if it exists.
-//
-// Arguments:
-//   - filename: The name of the file to create or truncate.
-//
-// Returns:
-//   - *os.File: A pointer to the opened file.
-//   - error: An error if the file cannot be created or opened.
-func CreateOrTruncateFile(filename string) (*os.File, error) {
-	return os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0644)
 }
