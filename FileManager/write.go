@@ -26,15 +26,11 @@ func init() {
 // - An error if the file creation or writing fails.
 func OverwriteFile(filePath string, data []byte) error {
 	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return fmt.Errorf("failed to open file for overwriting: %w", err)
-	}
+	ErrorHandler(err, errorMessages["OpenToOverwrite"])
 	defer file.Close()
 
 	_, err = file.Write(data)
-	if err != nil {
-		return fmt.Errorf("failed to write data to file: %w", err)
-	}
+	ErrorHandler(err, errorMessages["Write"])
 
 	return nil
 }
@@ -63,15 +59,11 @@ func OverwriteFileString(filePath string, data string) error {
 // - An error if the file creation or writing fails.
 func AppendFile(filePath string, data []byte) error {
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return fmt.Errorf("failed to open file for appending: %w", err)
-	}
 	defer file.Close()
+	ErrorHandler(err, errorMessages["OpenToAppend"])
 
 	_, err = file.Write(data)
-	if err != nil {
-		return fmt.Errorf("failed to append data to file: %w", err)
-	}
+	ErrorHandler(err, errorMessages["Append"])
 
 	return nil
 }
