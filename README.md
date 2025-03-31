@@ -3,5 +3,5 @@
 
 
 ### Documents
-* [File Manager Package](./filemanager/docs.md)
-* [Analyzer Package](./analyzer/docs.md)
+* [File Manager Package](./FileManager/docs.md)
+* [Analyzer Package](./Analyzer/docs.md)
