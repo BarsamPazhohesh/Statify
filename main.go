@@ -1,69 +1,83 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
-	"os"
+	"path/filepath"
 	"statfiy/Analyzer"
+	"statfiy/ArgManager"
 	"statfiy/FileManager"
 )
 
-// Runs the program like: go run . --path sourceCode
-// If no path is provided, it defaults to the executable's directory.
+// Usage examples:
+// 1. `go run . -p rootpath1 -p rootpath2 -p rootpath3 ...`
+// 2. To include comments, use the `-ic` flag: `go run . -ic -p rootpath1 -p rootpath2 -p rootpath3`
+// 3. For Help use go run . -h
 func main() {
-	defaultPath := os.Args[0]
-
-	// Define a flag for specifying the codebase path
-	codebasePath := flag.String("path", defaultPath, "Path to the codebase for analysis")
-	flag.Parse()
-
-	// Collect metadata from files in the specified codebase
-	files, err := FileManager.CollectFilesMetadata(*codebasePath)
+	// Parse the arguments
+	argsManager := &ArgManager.Args{}
+	args, err := argsManager.ParseArgs()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error: Cannot parse args: %v", err)
 	}
 
-	// Analyze the collected files
-	analyzedFiles, err := Analyzer.AnalyzeMultipleFiles(files)
-	if err != nil {
-		log.Fatal(err)
+	// Check if root paths are provided
+	if !args.RootPaths.IsArgProvided {
+		log.Fatal("Please provide root paths using the '--paths' flag.")
 	}
 
-	outputPath := "Info.md"
+	// Iterate over provided paths
+	for _, path := range args.RootPaths.Value {
+		absPath, err := FileManager.GetAbsolutePath(path)
+		if err != nil {
+			log.Fatalf("error path is invalid: %v", err.Error())
+		}
 
-	// overwrite file with empty value
-	if err := FileManager.OverwriteFile(outputPath, []byte{}); err != nil {
-		log.Println("Error writing to file:", err)
-	}
-	// Generate and write analysis report for each file
-	for _, file := range analyzedFiles {
-		report := fmt.Sprintf(`## %v
+		outputPath := fmt.Sprintf("%v.md", filepath.Base(absPath))
+		// Clear the output file
+		if err := FileManager.OverwriteFile(outputPath, []byte{}); err != nil {
+			log.Println("Error clearing output file:", err)
+		}
+		// Collect metadata from files in the specified codebase
+		files, err := FileManager.CollectFilesMetadata(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Analyze the collected files
+		analyzedFiles, err := Analyzer.AnalyzeMultipleFiles(files)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Generate and write analysis report for each file
+		for _, file := range analyzedFiles {
+			report := fmt.Sprintf(`## %v
 
 | Property      | Value      |
-|--------------|-----------|
-| File Name    | %v        |
-| File Path    | %v        |
-| Language     | %v        |
-| Total Size   | %v bytes  |
-| Code Size    | %v bytes  |
-| Comment Size | %v bytes  |
-| Blank Lines  | %v        |
-
+|---------------|------------|
+| File Name     | %v         |
+| File Path     | %v         |
+| Language      | %v         |
+| Total Size    | %v bytes   |
+| Code Size     | %v bytes   |
+| Comment Size  | %v bytes   |
+| Blank Lines   | %v         |
 `,
-			file.FileMetadata.Name,
-			file.FileMetadata.Name,
-			file.FileMetadata.Path,
-			file.Language,
-			file.TotalSize,
-			file.CodeSize,
-			file.CommentSize,
-			file.BlankLines,
-		)
+				file.FileMetadata.Name,
+				file.FileMetadata.Name,
+				file.FileMetadata.Path,
+				file.Language,
+				file.TotalSize,
+				file.CodeSize,
+				file.CommentSize,
+				file.BlankLines,
+			)
 
-		// Write report to the markdown file
-		if err := FileManager.AppendFileString(outputPath, report); err != nil {
-			log.Println("Error writing to file:", err)
+			// Write the report to the markdown file
+			if err := FileManager.AppendFileString(outputPath, report); err != nil {
+				log.Println("Error appending to file:", err)
+			}
 		}
 	}
 }
