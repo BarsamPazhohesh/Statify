@@ -28,6 +28,7 @@ func GetFileMetadata(filePath string) (FileMetadata, error) {
 	return FileMetadata{
 		Name:       info.Name(),
 		Path:       absolutePath,
+		Dir:        filepath.Dir(absolutePath),
 		Extension:  filepath.Ext(absolutePath),
 		Size:       info.Size(),
 		ModifiedAt: info.ModTime(),
