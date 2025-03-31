@@ -9,6 +9,7 @@ The structure that holds metadata for a file.
 #### Fields:
 - `Name` (string): The name of the file.
 - `Path` (string): The absolute path of the file.
+- `Dir` (string): The directory containing the specified file.
 - `Extension` (string): The file extension.
 - `Size` (int64): The size of the file in bytes.
 - `ModifiedAt` (time.Time): The last modified time of the file.
