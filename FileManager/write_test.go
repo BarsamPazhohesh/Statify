@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var samplePath string = "../test/SampleCodes.md"
+var samplePath string = "../test/SampleCodes.txt"
 var sampleMessage string = "this is a sample data"
 
 func TestOverwriteFile(t *testing.T) {
