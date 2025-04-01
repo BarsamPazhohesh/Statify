@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"statfiy/Analyzer"
 	"statfiy/ArgManager"
@@ -10,24 +11,26 @@ import (
 )
 
 // Usage examples:
-// 1. `go run . -p rootpath1 -p rootpath2 -p rootpath3 ...`
-// 2. To include comments, use the `-ic` flag: `go run . -ic -p rootpath1 -p rootpath2 -p rootpath3`
-// 3. For Help use go run . -h
+//  1. To specify multiple root paths for analysis, use the `-p` flag:
+//     `go run . -p /path/to/root1 -p /path/to/root2 -p /path/to/root3 ...`
+//  2. To include comments in the analysis, use the `-ic` flag:
+//     `go run . -ic -p /path/to/root1 -p /path/to/root2`
+//  3. To specify an output path for the results (images and markdown files), use the `-op` flag:
+//     `go run . -op /path/to/output -p /path/to/root1 -p /path/to/root2`
+//  4. To view the help message, use the `-h` flag:
+//     `go run . -h`
 func main() {
-	// Parse the arguments
-	argsManager := &ArgManager.Args{}
-	args, err := argsManager.ParseArgs()
+	args, err := ArgManager.ParseArgs(os.Args)
 	if err != nil {
 		log.Fatalf("Error: Cannot parse args: %v", err)
 	}
 
-	// Check if root paths are provided
-	if !args.RootPaths.IsArgProvided {
-		log.Fatal("Please provide root paths using the '--paths' flag.")
+	if !args.OutputPath.IsSet {
+		args.OutputPath.Value = os.Args[0]
 	}
 
 	// Iterate over provided paths
-	for _, path := range args.RootPaths.Value {
+	for _, path := range args.RootPaths {
 		absPath, err := FileManager.GetAbsolutePath(path)
 		if err != nil {
 			log.Fatalf("error path is invalid: %v", err.Error())
