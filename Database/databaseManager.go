@@ -10,6 +10,10 @@ var driverName string
 var DatabasePath string
 var analyzeFileResultTableName string
 var fileMetadataTableName string
+type primaryKeyAttribute struct {
+	AttributeName string
+	Type          string
+}
 func init() {
 	driverName = "sqlite3"
 	DatabasePath = "./StatifyDatabase.db"
