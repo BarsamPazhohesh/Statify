@@ -64,4 +64,5 @@ func createAnalyzeFileResultTable() error {
 	}
 	defer db.Close()
 }
+func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute) string {
 }
