@@ -1,7 +1,6 @@
 package FileManager
 
 import (
-	"fmt"
 	"os"
 	"testing"
 )
