@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 )
 
 // GetFileMetadata retrieves metadata for a given file path.
@@ -46,27 +47,64 @@ func GetFileMetadata(filePath string) (FileMetadata, error) {
 func CollectFilesMetadata(rootDir string) ([]FileMetadata, error) {
 	var fileList []FileMetadata
 
-	err := filepath.Walk(rootDir, func(filePath string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+	err := filepath.Walk(rootDir,
+		func(filePath string, info fs.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
 
-		if info.IsDir() {
+			if info.IsDir() {
+				return nil
+			}
+
+			fileMeta, err := GetFileMetadata(filePath)
+			if err != nil {
+				return err
+			}
+
+			fileList = append(fileList, fileMeta)
 			return nil
-		}
-
-		fileMeta, err := GetFileMetadata(filePath)
-		if err != nil {
-			return nil
-		}
-
-		fileList = append(fileList, fileMeta)
-		return nil
-	})
+		})
 
 	if err != nil {
 		return nil, err
 	}
 
+	return fileList, nil
+}
+
+// CollectFileMetadataByExtension scans a directory and collects metadata for files with specific extensions.
+//
+// Arguments:
+//   - rootDir: The directory path to scan for files.
+//   - extensions: A list of file extensions to filter.
+//
+// Returns:
+//   - []FileMetadata: A slice containing metadata of filtered files.
+//   - error: An error if directory traversal fails.
+func CollectFileMetadataByExtension(rootDir string, extensions []string) ([]FileMetadata, error) {
+	var fileList []FileMetadata
+
+	err := filepath.Walk(rootDir,
+		func(filePath string, info fs.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+
+			ext := filepath.Ext(filePath)
+			if slices.Contains(extensions, ext) {
+				if fileMeta, err := GetFileMetadata(filePath); err == nil {
+					fileList = append(fileList, fileMeta)
+				}
+			}
+			return nil
+		})
+
+	if err != nil {
+		return nil, err
+	}
 	return fileList, nil
 }
