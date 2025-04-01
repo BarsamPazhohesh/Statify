@@ -6,27 +6,33 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 )
+
 var driverName string
 var DatabasePath string
 var analyzeFileResultTableName string
 var fileMetadataTableName string
+
 type primaryKeyAttribute struct {
 	AttributeName string
 	Type          string
 }
+
 func init() {
 	driverName = "sqlite3"
 	DatabasePath = "./StatifyDatabase.db"
 	fileMetadataTableName = "TblFileMetadata"
 	analyzeFileResultTableName = "TblAnalyzeFileResult"
 }
+
 func createFileMetadataTable() error {
 	db, err := sql.Open(driverName, DatabasePath)
 	if err != nil {
 		return err
 	}
 	defer db.Close()
+
 	execText := fileMetadataQueryText(fileMetadataTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
+
 	_, err = db.Exec(execText)
 	if err != nil {
 		return err
