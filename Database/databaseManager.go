@@ -22,4 +22,6 @@ func createFileMetadataTable() error {
 		return err
 	}
 	defer db.Close()
+func fileMetadataQueryText(tableName string, primaryKey primaryKeyAttribute) string {
+}
 }
