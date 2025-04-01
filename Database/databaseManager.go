@@ -58,5 +58,9 @@ func fileMetadataQueryText(tableName string, primaryKey primaryKeyAttribute) str
 	return execText
 }
 func createAnalyzeFileResultTable() error {
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return err
+	}
 }
 }
