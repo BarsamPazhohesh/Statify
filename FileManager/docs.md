@@ -1,5 +1,5 @@
 # File Manager Documentation
-The **filemanager** is a versatile utility designed to simplify file handling operations such as reading, writing, and processing files within a project. 
+The **FileManager** is a versatile utility designed to simplify file handling operations such as reading, writing, and processing files within a project. 
 
 ## Types
 
@@ -21,6 +21,7 @@ The structure that holds metadata for a file.
 type FileMetadata struct {
     Name       string
     Path       string
+    Dir        string
     Extension  string
     Size       int64
     ModifiedAt time.Time
@@ -80,6 +81,37 @@ if err != nil {
 }
 ```
 
+---
+
+### CollectFileMetadataByExtension
+
+Walks through a directory and collects metadata for files with specific extensions.
+
+#### Arguments:
+- `rootDir` (string): The directory path to scan for files.
+- `extensions` ([]string): A list of file extensions to filter.
+
+#### Returns:
+- `[]FileMetadata`: A slice containing metadata of filtered files.
+- `error`: An error if directory traversal fails.
+
+#### Example Usage:
+
+```go
+extensions := []string{".txt", ".md"}
+filesMeta, err := CollectFileMetadataByExtension("/path/to/directory", extensions)
+if err != nil {
+    fmt.Println("Error collecting filtered files metadata:", err)
+} else {
+    for _, fileMeta := range filesMeta {
+        fmt.Println("File:", fileMeta.Name)
+        fmt.Println("Path:", fileMeta.Path)
+        fmt.Println("Size:", fileMeta.Size)
+    }
+}
+```
+---
+
 
 ## Read Functions
 
@@ -107,7 +139,7 @@ if err != nil {
 
 ---
 
-### ReadLinesLimi
+### ReadLinesLimit
 Reads a file line by line, applying a callback, up to a maximum number of lines. Stops reading when `maxLines` is reached.
 
 #### Arguments:
