@@ -12,46 +12,27 @@ var sampleMessage string = "this is a sample data"
 func TestOverwriteFile(t *testing.T) {
 	t.Log(OverwriteFile(samplePath, []byte(sampleMessage)))
 
-	_, err := os.Stat(samplePath)
-
-	if err != nil {
-		t.Log("Oh fucked: %w", err)
-	} else {
-		t.Log("Fine, file exist")
-		os.Remove(samplePath)
-	}
+	existenceChecker(t)
 }
 
 func TestOverwriteFileString(t *testing.T) {
 	t.Log(OverwriteFileString(samplePath, sampleMessage))
 
-	_, err := os.Stat(samplePath)
-
-	if err != nil {
-		t.Log("Oh fucked: %w", err)
-	} else {
-		t.Log("Fine, file exist")
-		os.Remove(samplePath)
-	}
+	existenceChecker(t)
 }
 
 func TestAppendFile(t *testing.T) {
 	t.Log(AppendFile(samplePath, []byte(sampleMessage)))
 
-	_, err := os.Stat(samplePath)
-
-	if err != nil {
-		t.Log("Oh fucked: %w", err)
-	} else {
-		t.Log("Fine, file exist")
-		os.Remove(samplePath)
-	}
+	existenceChecker(t)
 }
 
 func TestAppendFileString(t *testing.T) {
 	t.Log(AppendFileString(samplePath, sampleMessage))
 
-	_, err := os.Stat(samplePath)
+	existenceChecker(t)
+}
+
 func existenceChecker(t *testing.T) {
 	existence := IsFileExists(samplePath)
 
