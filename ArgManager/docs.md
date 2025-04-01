@@ -3,19 +3,20 @@ The `ArgManager` package provides a structured way to handle command-line argume
 
 ### Structs
 
-#### `Arg[T any]`
-Represents a generic argument with a value and a flag indicating if it was provided.
+#### `OptionalArg[T any]`
+Represents an optional argument with a value and a flag indicating whether the argument was provided or not.
 
 #### Fields:
 - `Value` (T): The actual argument value.
-- `IsArgProvided` (bool): A flag indicating whether the argument was provided (not nil or incorrect value).
+- `IsSet` (bool): A flag indicating whether the argument was provided and is valid (not nil or incorrect type).
 
 #### `Args`
 Holds the various arguments used in the application.
 
 #### Fields:
-- `RootPaths` (`Arg[[]string]`): A list of root paths for analysis.
-- `IncludeComment` (`Arg[bool]`): A flag indicating whether to include comments in the analysis.
+- `RootPaths` (`[]string`): A list of root paths for analysis.
+- `IncludeComment` (bool): A flag indicating whether to include comments in the analysis.
+- `OutputPath` (`OptionalArg[string]`): The output path where images and markdown files are stored. This is an optional argument.
 
 ---
 
@@ -25,7 +26,7 @@ Holds the various arguments used in the application.
 Parses the command-line arguments and populates the `Args` fields.
 
 #### Arguments:
-- None
+- `arguments []string`: The list of command-line arguments passed to the application (e.g., `os.Args`).
 
 #### Returns:
 - `(*Args, error)`: A pointer to an `Args` instance containing the parsed values, or an error if parsing fails.
@@ -33,28 +34,20 @@ Parses the command-line arguments and populates the `Args` fields.
 #### Example Usage:
 
 ```go
-package main
 
-import (
-    "fmt"
-    "log"
-    "arg_manager"
-)
+args, err := args.ParseArgs(os.Args)
+if err != nil {
+  log.Fatal("Error parsing arguments:", err)
+}
 
-func main() {
-    args := &arg_manager.Args{}
-    parsedArgs, err := args.ParseArgs()
-    if err != nil {
-        log.Fatal("Error parsing arguments:", err)
-    }
+// Check if output path is set
+if !parsedArgs.RootPaths.IsSet {
+  log.Fatal("Please provide output path using the '--output-path' flag.")
+}
 
-    // Check if root paths are provided
-	if !args.RootPaths.IsArgProvided {
-		log.Fatal("Please provide root paths using the '--paths' flag.")
-	}
-
-    fmt.Println("Root Paths:", parsedArgs.RootPaths.Value)
-    fmt.Println("Include Comments:", parsedArgs.IncludeComment.Value)
+  fmt.Println("Root Paths:", parsedArgs.RootPaths)
+  fmt.Println("Include Comments:", parsedArgs.IncludeComment)
+  fmt.Println("Output Path:", parsedArgs.OutputPath.Value)
 }
 ```
 
@@ -86,4 +79,17 @@ or
 
 ```sh
 go run . -ic
+```
+
+#### `--output-path` / `-op`
+**Description:** Specifies the output path where images and markdown files are stored. This is an optional flag.
+
+**Example:**
+```sh
+go run . --output-path /path/to/output
+```
+or 
+
+```sh
+go run . -op /path/to/output
 ```
