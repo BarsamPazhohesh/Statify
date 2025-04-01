@@ -23,5 +23,20 @@ func createFileMetadataTable() error {
 	}
 	defer db.Close()
 func fileMetadataQueryText(tableName string, primaryKey primaryKeyAttribute) string {
+	execText := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %v (%v %v NOT NULL PRIMARY KEY AUTOINCREMENT,",
+		tableName,
+		primaryKey.AttributeName,
+		primaryKey.Type)
+
+	execText += fmt.Sprintf(` 
+	%v TEXT, 
+	%v TEXT, 
+	%v TEXT, 
+	%v TEXT, 
+	%v int, 
+	%v TIMESTAMP)`,
+		"Name", "Path", "Dir", "Extension", "Size", "ModifiedAt")
+
+	return execText
 }
 }
