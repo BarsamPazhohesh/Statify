@@ -52,11 +52,12 @@ func TestAppendFileString(t *testing.T) {
 	t.Log(AppendFileString(samplePath, sampleMessage))
 
 	_, err := os.Stat(samplePath)
+func existenceChecker(t *testing.T) {
+	existence := IsFileExists(samplePath)
 
-	if err != nil {
-		t.Log("Oh fucked: %w", err)
-	} else {
-		t.Log("Fine, file exist")
+	t.Log("IsFileExists: ", existence)
+
+	if existence == true {
 		os.Remove(samplePath)
 	}
 
