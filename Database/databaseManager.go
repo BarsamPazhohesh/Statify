@@ -17,4 +17,8 @@ func init() {
 	analyzeFileResultTableName = "TblAnalyzeFileResult"
 }
 func createFileMetadataTable() error {
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return err
+	}
 }
