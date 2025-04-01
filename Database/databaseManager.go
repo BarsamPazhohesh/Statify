@@ -57,4 +57,6 @@ func fileMetadataQueryText(tableName string, primaryKey primaryKeyAttribute) str
 
 	return execText
 }
+func createAnalyzeFileResultTable() error {
+}
 }
