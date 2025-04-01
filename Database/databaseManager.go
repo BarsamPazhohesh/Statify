@@ -16,3 +16,5 @@ func init() {
 	fileMetadataTableName = "TblFileMetadata"
 	analyzeFileResultTableName = "TblAnalyzeFileResult"
 }
+func createFileMetadataTable() error {
+}
