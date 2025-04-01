@@ -64,6 +64,12 @@ func createAnalyzeFileResultTable() error {
 	}
 	defer db.Close()
 	execText := analyzeFileResultQueryText(analyzeFileResultTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
+	_, err = db.Exec(execText)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute) string {
 	execText := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %v (%v %v NOT NULL PRIMARY KEY AUTOINCREMENT,", tableName, primaryKey.AttributeName, primaryKey.Type)
