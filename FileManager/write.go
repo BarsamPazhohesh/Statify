@@ -26,12 +26,16 @@ func init() {
 // - An error if the file creation or writing fails.
 func OverwriteFile(filePath string, data []byte) error {
 	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	ErrorHandler(err, errorMessages["OpenToOverwrite"])
+	if err != nil {
+		return fmt.Errorf("%v: %w", errorMessages["OpenToOverwrite"], err)
+	}
 
 	defer file.Close()
 
 	_, err = file.Write(data)
-	ErrorHandler(err, errorMessages["Write"])
+	if err != nil {
+		return fmt.Errorf("%v: %w", errorMessages["Write"], err)
+	}
 
 	return nil
 }
@@ -60,11 +64,15 @@ func OverwriteFileString(filePath string, data string) error {
 // - An error if the file creation or writing fails.
 func AppendFile(filePath string, data []byte) error {
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	ErrorHandler(err, errorMessages["OpenToAppend"])
+	if err != nil {
+		return fmt.Errorf("%v: %w", errorMessages["OpenToAppend"], err)
+	}
 
 	defer file.Close()
 	_, err = file.Write(data)
-	ErrorHandler(err, errorMessages["Append"])
+	if err != nil {
+		return fmt.Errorf("%v: %w", errorMessages["Append"], err)
+	}
 
 	return nil
 }
@@ -80,11 +88,4 @@ func AppendFile(filePath string, data []byte) error {
 // - An error if the file creation or writing fails.
 func AppendFileString(filePath string, data string) error {
 	return AppendFile(filePath, []byte(data))
-}
-
-func ErrorHandler(err error, errorMessage string) error {
-	if err != nil {
-		return fmt.Errorf("%v: %w", errorMessage, err)
-	}
-	return nil
 }

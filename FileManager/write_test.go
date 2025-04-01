@@ -59,8 +59,5 @@ func TestAppendFileString(t *testing.T) {
 		t.Log("Fine, file exist")
 		os.Remove(samplePath)
 	}
-}
 
-func TestErrorHandler(t *testing.T) {
-	t.Log(ErrorHandler(fmt.Errorf("This is a error message"), "Oh we made an error"))
 }
