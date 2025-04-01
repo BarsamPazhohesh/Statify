@@ -91,4 +91,3 @@ func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute
 
 	return execText
 }
-
