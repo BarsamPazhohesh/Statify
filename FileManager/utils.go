@@ -30,14 +30,26 @@ func GetRelativePath(root string, path string) (string, error) {
 	return filepath.Rel(root, path)
 }
 
-// IsFileExists checks whether a file or directory exists at the specified path.
+// IsFileExists checks whether a file exists at the specified path.
 //
 // Arguments:
-//   - filename: The file or directory path to check for existence.
+//   - filename: The file path to check for existence.
 //
 // Returns:
-//   - bool: `true` if the file or directory exists, `false` otherwise.
+//   - bool: `true` if the file exists, `false` otherwise.
 func IsFileExists(filename string) bool {
-	_, err := os.Stat(filename)
-	return err == nil
+	info, err := os.Stat(filename)
+	return err == nil && !info.IsDir()
+}
+
+// IsDirExists checks whether a directory exists at the specified path.
+//
+// Arguments:
+//   - dirname: The  directory path to check for existence.
+//
+// Returns:
+//   - bool: `true` if the dir exists, `false` otherwise.
+func IsDirExists(dirname string) bool {
+	info, err := os.Stat(dirname)
+	return err == nil && info.IsDir()
 }
