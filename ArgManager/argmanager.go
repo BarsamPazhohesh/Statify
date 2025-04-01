@@ -2,57 +2,68 @@ package ArgManager
 
 import (
 	"github.com/urfave/cli/v2"
-	"os"
 )
 
-// Arg represents a generic argument with a value and a flag indicating if it's provided.
-type Arg[T any] struct {
-	Value         T
-	IsArgProvided bool
+type OptionalArg[T any] struct {
+	Value T
+	IsSet bool
 }
 
-// Args holds the various arguments used in the application.
+// newOptionalArg returns an OptionalArg with the value from the flag if set, or the defaultValue otherwise.
+func newOptionalArg[T any](ctx *cli.Context, flagName string, defaultValue T) OptionalArg[T] {
+	val := ctx.Generic(flagName)
+	if val == nil {
+		return OptionalArg[T]{Value: defaultValue, IsSet: false}
+	}
+
+	typedVal, ok := val.(T)
+	if !ok {
+		return OptionalArg[T]{Value: defaultValue, IsSet: false}
+	}
+
+	return OptionalArg[T]{Value: typedVal, IsSet: true}
+}
+
 type Args struct {
-	RootPaths      Arg[[]string]
-	IncludeComment Arg[bool]
+	RootPaths      []string
+	IncludeComment bool
+	OutputPath     OptionalArg[string]
 }
 
-// ParseArgs parses the command-line arguments and populates the Args fields.
-func (a *Args) ParseArgs() (*Args, error) {
+// ParseArgs parses command-line arguments and returns an Args struct.
+func ParseArgs(arguments []string) (*Args, error) {
+	var args Args
 	app := &cli.App{
 		Flags: []cli.Flag{
 			&cli.StringSliceFlag{
-				Name:    "paths",
-				Aliases: []string{"p"},
-				Usage:   "List of root paths for analysis files",
+				Name:     "paths",
+				Aliases:  []string{"p"},
+				Usage:    "List of root paths for analysis files",
+				Required: true,
 			},
 			&cli.BoolFlag{
 				Name:    "include-comment",
 				Aliases: []string{"ic"},
 				Usage:   "Include comments in the analysis",
 			},
+			&cli.StringFlag{
+				Name:    "output-path",
+				Aliases: []string{"op"},
+				Usage:   "Specify output path where images and markdown file are stored",
+			},
 		},
 		Action: func(ctx *cli.Context) error {
-			// Parsing the paths argument
-			paths := ctx.StringSlice("paths")
-			if len(paths) > 0 {
-				a.RootPaths.Value = paths
-				a.RootPaths.IsArgProvided = true
-			}
+			args.RootPaths = ctx.StringSlice("paths")
+			args.IncludeComment = ctx.Bool("include-comment")
+			args.OutputPath = newOptionalArg(ctx, "output-path", "")
 
-			// Parsing the include-comment flag
-			includeComment := ctx.Bool("include-comment")
-			a.IncludeComment.Value = includeComment
-			a.IncludeComment.IsArgProvided = true
 			return nil
 		},
 	}
 
-	// Run the app and handle errors
-	err := app.Run(os.Args)
-	if err != nil {
+	if err := app.Run(arguments); err != nil {
 		return nil, err
 	}
 
-	return a, nil
+	return &args, nil
 }
