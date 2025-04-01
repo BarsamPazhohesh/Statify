@@ -21,4 +21,5 @@ func createFileMetadataTable() error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 }
