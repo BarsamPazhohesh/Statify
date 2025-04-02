@@ -98,4 +98,5 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 }
