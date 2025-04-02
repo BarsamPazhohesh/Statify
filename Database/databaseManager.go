@@ -108,4 +108,11 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 		extension,
 		size,
 		modifiedAt.Format("2006-01-02 15:04:05"))
+
+	_, err = db.Exec(execText)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
