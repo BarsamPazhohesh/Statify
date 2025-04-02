@@ -122,4 +122,5 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, code
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 }
