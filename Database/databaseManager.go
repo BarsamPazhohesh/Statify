@@ -137,4 +137,11 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, code
 	if err != nil {
 		return err
 	}
+
+	_, err = db.Exec(execText)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
