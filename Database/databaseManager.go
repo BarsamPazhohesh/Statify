@@ -123,4 +123,13 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, code
 		return err
 	}
 	defer db.Close()
+
+	execText := fmt.Sprintf("INSERT INTO %v VALUES (null, %v, '%v', %v, %v, %v, %v);",
+		analyzeFileResultTableName,
+		fileMetadataId,
+		language,
+		codeSize,
+		commentSize,
+		blankLines,
+		total)
 }
