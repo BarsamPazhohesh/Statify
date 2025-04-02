@@ -99,4 +99,13 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 		return err
 	}
 	defer db.Close()
+
+	execText := fmt.Sprintf("INSERT INTO %v VALUES (null, '%v', '%v', '%v', '%v', %v, '%v');",
+		fileMetadataTableName,
+		name,
+		path,
+		dir,
+		extension,
+		size,
+		modifiedAt.Format("2006-01-02 15:04:05"))
 }
