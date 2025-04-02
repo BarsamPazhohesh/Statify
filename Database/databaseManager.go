@@ -92,3 +92,6 @@ func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute
 
 	return execText
 }
+
+func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, modifiedAt time.Time) error {
+}
