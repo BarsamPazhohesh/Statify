@@ -132,4 +132,9 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, code
 		commentSize,
 		blankLines,
 		total)
+
+	_, err = db.Exec("PRAGMA foreign_keys = ON;")
+	if err != nil {
+		return err
+	}
 }
