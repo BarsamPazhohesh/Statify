@@ -118,4 +118,8 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 }
 
 func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, codeSize, commentSize, blankLines, total int) error {
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return err
+	}
 }
