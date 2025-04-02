@@ -3,16 +3,21 @@ package Database
 import (
 	"statfiy/FileManager"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestCreateFileMetadataTable(t *testing.T) {
-	t.Log(createFileMetadataTable())
-	existenceChecker(t)
+	err := createFileMetadataTable()
+	require.NoError(t, err, "Something messed up")
 
+	existenceChecker(t)
 }
 
 func TestCreateAnalyzeFileResultTable(t *testing.T) {
-	t.Log(createAnalyzeFileResultTable())
+	err := createAnalyzeFileResultTable()
+	require.NoError(t, err, "Something messed up")
+
 	existenceChecker(t)
 }
 
