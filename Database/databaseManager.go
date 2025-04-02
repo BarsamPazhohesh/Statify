@@ -116,3 +116,6 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 
 	return nil
 }
+
+func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, codeSize, commentSize, blankLines, total int) error {
+}
