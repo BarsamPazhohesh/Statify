@@ -3,31 +3,37 @@ package FileManager
 import (
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var samplePath string = "../test/SampleCodes.txt"
 var sampleMessage string = "this is a sample data"
 
 func TestOverwriteFile(t *testing.T) {
-	t.Log(OverwriteFile(samplePath, []byte(sampleMessage)))
+	err := OverwriteFile(samplePath, []byte(sampleMessage))
+	require.NoError(t, err, "Something messed up")
 
 	existenceChecker(t)
 }
 
 func TestOverwriteFileString(t *testing.T) {
-	t.Log(OverwriteFileString(samplePath, sampleMessage))
+	err := OverwriteFileString(samplePath, sampleMessage)
+	require.NoError(t, err, "Something messed up")
 
 	existenceChecker(t)
 }
 
 func TestAppendFile(t *testing.T) {
-	t.Log(AppendFile(samplePath, []byte(sampleMessage)))
+	err := AppendFile(samplePath, []byte(sampleMessage))
+	require.NoError(t, err, "Something messed up")
 
 	existenceChecker(t)
 }
 
 func TestAppendFileString(t *testing.T) {
-	t.Log(AppendFileString(samplePath, sampleMessage))
+	err := AppendFileString(samplePath, sampleMessage)
+	require.NoError(t, err, "Something messed up")
 
 	existenceChecker(t)
 }
