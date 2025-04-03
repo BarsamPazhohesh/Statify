@@ -168,5 +168,9 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 
 	for rows.Next() {
 		row := FileManager.FileMetadata{}
+		err := rows.Scan(&row.Id, &row.Name, &row.Path, &row.Dir, &row.Extension, &row.Size, &row.ModifiedAt)
+		if err != nil {
+			return nil, err
+		}
 	}
 }
