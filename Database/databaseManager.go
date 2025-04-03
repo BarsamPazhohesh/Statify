@@ -12,6 +12,7 @@ var driverName string
 var DatabasePath string
 var analyzeFileResultTableName string
 var fileMetadataTableName string
+var TimeFormat string
 
 type primaryKeyAttribute struct {
 	AttributeName string
@@ -23,6 +24,7 @@ func init() {
 	DatabasePath = "./StatifyDatabase.db"
 	fileMetadataTableName = "TblFileMetadata"
 	analyzeFileResultTableName = "TblAnalyzeFileResult"
+	TimeFormat = "2006-01-02 15:04:05"
 }
 
 func createFileMetadataTable() error {
@@ -107,7 +109,7 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 		dir,
 		extension,
 		size,
-		modifiedAt.Format("2006-01-02 15:04:05"))
+		modifiedAt.Format(TimeFormat))
 
 	_, err = db.Exec(execText)
 	if err != nil {
