@@ -61,7 +61,7 @@ func TestGetAllAnalyzeFileResult(t *testing.T) {
 	TestInsertRowToAnalyzeFileResultTable(t)
 
 	res, err := GetAllAnalyzeFileResult()
-	assert.Error(t, err)
+	assert.NoError(t, err)
 
 	expect := []Analyzer.AnalyzeFileResult{}
 
