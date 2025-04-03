@@ -51,3 +51,6 @@ func TestInsertRowToAnalyzeFileResultTable(t *testing.T) {
 	err = InsertRowToAnalyzeFileResultTable(6, 0, 10, 10, 10, 5)
 	require.Error(t, err, "Something messed up")
 }
+
+func TestGetAllFileMetadata(t *testing.T) {
+}
