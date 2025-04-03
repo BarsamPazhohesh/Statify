@@ -53,4 +53,5 @@ func TestInsertRowToAnalyzeFileResultTable(t *testing.T) {
 }
 
 func TestGetAllFileMetadata(t *testing.T) {
+	TestInsertRowToFileMetadataTable(t)
 }
