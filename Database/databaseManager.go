@@ -209,4 +209,6 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 		return nil, err
 	}
 	defer rows.Close()
+	for rows.Next() {
+	}
 }
