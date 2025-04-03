@@ -208,4 +208,5 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 }
