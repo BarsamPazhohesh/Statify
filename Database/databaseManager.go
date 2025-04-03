@@ -188,4 +188,20 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 		return nil, err
 	}
 	defer db.Close()
+
+	rows, err := db.Query(fmt.Sprintf(`
+		SELECT %v.*,
+		%v.id, %v.Language, %v.CodeSize, %v.CommentSize, %v.BlankLines, %v.TotalSize
+		FROM %v JOIN %v ON %v.FileMetadataId = %v.id`,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName))
 }
