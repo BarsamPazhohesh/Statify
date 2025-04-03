@@ -57,3 +57,5 @@ func TestGetAllFileMetadata(t *testing.T) {
 	res, _ := GetAllFileMetadata()
 	assert.Equal(t, time.Now().Format(TimeFormat), res[len(res)-1].ModifiedAt.Format(TimeFormat))
 }
+func TestGetAllAnalyzeFileResult(t *testing.T) {
+}
