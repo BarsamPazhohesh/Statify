@@ -153,4 +153,10 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSiz
 
 func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 	var results []FileManager.FileMetadata
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
 }
