@@ -59,4 +59,11 @@ func TestGetAllFileMetadata(t *testing.T) {
 }
 func TestGetAllAnalyzeFileResult(t *testing.T) {
 	TestInsertRowToAnalyzeFileResultTable(t)
+
+	res, err := GetAllAnalyzeFileResult()
+	assert.Error(t, err)
+
+	expect := []Analyzer.AnalyzeFileResult{}
+
+	assert.NotEqual(t, expect, res)
 }
