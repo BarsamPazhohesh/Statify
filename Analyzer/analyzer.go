@@ -10,6 +10,7 @@ type FileMetadata = FileManager.FileMetadata
 
 // AnalyzeFileResult represents the result of analyzing a file.
 type AnalyzeFileResult struct {
+	Id           int
 	FileMetadata FileMetadata
 	Language     Language
 	TotalSize    int64
