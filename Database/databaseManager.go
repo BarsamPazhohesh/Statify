@@ -182,4 +182,10 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 
 func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
 }
