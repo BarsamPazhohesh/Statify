@@ -179,4 +179,5 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 }
 
 func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
+	var results []Analyzer.AnalyzeFileResult
 }
