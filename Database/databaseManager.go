@@ -229,5 +229,6 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 		if err != nil {
 			return nil, err
 		}
+		results = append(results, row)
 	}
 }
