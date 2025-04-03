@@ -177,3 +177,6 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 
 	return results, nil
 }
+
+func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
+}
