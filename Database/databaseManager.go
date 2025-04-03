@@ -87,14 +87,14 @@ func createAnalyzeFileResultTable() error {
 func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute) string {
 	execText := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %v (%v %v NOT NULL PRIMARY KEY AUTOINCREMENT,", tableName, primaryKey.AttributeName, primaryKey.Type)
 
-		"FileMetadata",
 	execText += fmt.Sprintf(" %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, FOREIGN KEY (%v) REFERENCES %v(id))",
+		"FileMetadataId",
 		"Language",
 		"CodeSize",
 		"CommentSize",
 		"BlankLines",
 		"TotalSize",
-		"FileMetadata",
+		"FileMetadataId",
 		fileMetadataTableName)
 
 	return execText
