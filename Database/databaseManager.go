@@ -85,8 +85,8 @@ func createAnalyzeFileResultTable() error {
 func analyzeFileResultQueryText(tableName string, primaryKey primaryKeyAttribute) string {
 	execText := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %v (%v %v NOT NULL PRIMARY KEY AUTOINCREMENT,", tableName, primaryKey.AttributeName, primaryKey.Type)
 
-	execText += fmt.Sprintf(" %v INTEGER, %v TEXT, %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, FOREIGN KEY (%v) REFERENCES %v(id))",
 		"FileMetadata",
+	execText += fmt.Sprintf(" %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, %v INTEGER, FOREIGN KEY (%v) REFERENCES %v(id))",
 		"Language",
 		"CodeSize",
 		"CommentSize",
@@ -122,7 +122,7 @@ func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, m
 	return nil
 }
 
-func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language string, codeSize, commentSize, blankLines, total int) error {
+func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSize, commentSize, blankLines, total int) error {
 	db, err := sql.Open(driverName, DatabasePath)
 	if err != nil {
 		return err
