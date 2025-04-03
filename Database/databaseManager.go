@@ -174,4 +174,6 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 		}
 		results = append(results, row)
 	}
+
+	return results, nil
 }
