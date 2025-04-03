@@ -211,5 +211,23 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 	defer rows.Close()
 	for rows.Next() {
 		row := Analyzer.AnalyzeFileResult{}
+		err := rows.Scan(
+			&row.FileMetadata.Id,
+			&row.FileMetadata.Name,
+			&row.FileMetadata.Path,
+			&row.FileMetadata.Dir,
+			&row.FileMetadata.Extension,
+			&row.FileMetadata.Size,
+			&row.FileMetadata.ModifiedAt,
+			&row.Id,
+			&row.Language,
+			&row.CodeSize,
+			&row.CommentSize,
+			&row.BlankLines,
+			&row.TotalSize)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 }
