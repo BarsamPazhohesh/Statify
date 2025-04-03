@@ -152,4 +152,5 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSiz
 }
 
 func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
+	var results []FileManager.FileMetadata
 }
