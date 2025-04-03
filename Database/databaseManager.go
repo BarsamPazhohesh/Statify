@@ -204,4 +204,8 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 		analyzeFileResultTableName,
 		analyzeFileResultTableName,
 		fileMetadataTableName))
+
+	if err != nil {
+		return nil, err
+	}
 }
