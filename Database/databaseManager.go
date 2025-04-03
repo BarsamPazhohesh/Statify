@@ -159,4 +159,11 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 		return nil, err
 	}
 	defer db.Close()
+
+	rows, err := db.Query(fmt.Sprintf("SELECT * FROM %v", fileMetadataTableName))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
 }
