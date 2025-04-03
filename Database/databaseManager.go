@@ -210,5 +210,6 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 	}
 	defer rows.Close()
 	for rows.Next() {
+		row := Analyzer.AnalyzeFileResult{}
 	}
 }
