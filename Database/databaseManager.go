@@ -167,5 +167,6 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 	defer rows.Close()
 
 	for rows.Next() {
+		row := FileManager.FileMetadata{}
 	}
 }
