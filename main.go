@@ -23,7 +23,7 @@ func main() {
 		log.Fatalf("Error parsing arguments: %v", err)
 	}
 
-	fmt.Println(args.OutputPath)
+	// fmt.Println(args.OutputPath)
 	// Set default output path to "./analyzed" if not specified by user.
 	// This OutputPath has bug i will fix later :)
 	// TODO : Fix OutputPath Bug
