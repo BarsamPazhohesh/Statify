@@ -49,6 +49,7 @@ var languageToCommentSyntax = map[Language]CommentSyntax{
 	Clojure:    {ExtractComment: ExtractClojureComments},
 	Julia:      {ExtractComment: ExtractJuliaComments},
 	Fortran:    {ExtractComment: ExtractFortranComments},
+	Zig:        {ExtractComment: ExtractCComments},
 	Unknown:    {ExtractComment: ExtractCComments}, // Default for unknown languages
 }
 

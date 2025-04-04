@@ -47,6 +47,7 @@ const (
 	Julia
 	PowerShell
 	Fortran
+	Zig
 	Unknown // Default for unknown or unsupported languages
 )
 
@@ -87,6 +88,7 @@ var languageNames = map[Language]string{
 	Julia:      "Julia",
 	PowerShell: "PowerShell",
 	Fortran:    "Fortran",
+	Zig:        "Zig",
 	Unknown:    "Unknown",
 }
 
@@ -130,6 +132,46 @@ var extensionToLanguage = map[string]Language{
 	".clj":   Clojure,
 	".fs":    FSharp,
 	".jl":    Julia,
+	".zig":   Zig,
+}
+
+var GitHubLanguageColors = map[Language]string{
+	Go:         "#00ADD8",
+	C:          "#555555",
+	CPlusPlus:  "#F34B7D",
+	CSharp:     "#178600",
+	Rust:       "#DEA584",
+	JavaScript: "#F1E05A",
+	TypeScript: "#3178c6",
+	Python:     "#3572A5",
+	Java:       "#B07219",
+	Kotlin:     "#F18E33",
+	Swift:      "#FFAC45",
+	HTML:       "#E34C26",
+	CSS:        "#563D7C",
+	SQL:        "#438EFF",
+	PHP:        "#777BB4",
+	Ruby:       "#701516",
+	Dart:       "#00B4AB",
+	Lua:        "#000080",
+	Perl:       "#0298C3",
+	Scala:      "#c22d40",
+	Haskell:    "#5e5086",
+	Assembly:   "#6E4C13",
+	Bash:       "#89E051",
+	R:          "#198CE7",
+	Matlab:     "#0076A8",
+	VB:         "#945DB7",
+	ObjectiveC: "#438EFF",
+	Shell:      "#89E051",
+	Pascal:     "#E31C3D",
+	Elixir:     "#6e4a7e",
+	Clojure:    "#db5855",
+	FSharp:     "#B845FC",
+	Julia:      "#A93939",
+	PowerShell: "#012456",
+	Fortran:    "#4d41b1",
+	Zig:        "#EC915C",
 }
 
 // String returns the string representation of a Language
@@ -138,6 +180,13 @@ func (l Language) String() string {
 		return name
 	}
 	return "Unknown"
+}
+
+func (l Language) GetColor() string {
+	if color, exists := GitHubLanguageColors[l]; exists {
+		return color
+	}
+	return GitHubLanguageColors[Unknown]
 }
 
 // GetLanguage determines the programming language based on file extension
