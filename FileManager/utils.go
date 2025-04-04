@@ -3,6 +3,7 @@ package FileManager
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 // GetAbsolutePath converts a relative or absolute file path to its absolute form.
@@ -52,4 +53,13 @@ func IsFileExists(filename string) bool {
 func IsDirExists(dirname string) bool {
 	info, err := os.Stat(dirname)
 	return err == nil && info.IsDir()
+}
+
+// GetProgramSourceDir returns the directory of the source file where this function is called from.
+func GetProgramSourceDir() string {
+	_, file, _, ok := runtime.Caller(1)
+	if !ok {
+		return ""
+	}
+	return filepath.Dir(file)
 }
