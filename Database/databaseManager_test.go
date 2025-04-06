@@ -37,6 +37,7 @@ func TestAnalyzeFileResultQueryText(t *testing.T) {
 
 func TestInsertRowToFileMetadataTable(t *testing.T) {
 	TestCreateFileMetadataTable(t)
+
 	time := time.Now()
 	err := InsertRowToFileMetadataTable("main", "./statify", "/home/rezishon", ".go", 43, time)
 	require.NoError(t, err, "Something messed up")
@@ -59,6 +60,8 @@ func TestInsertRowToAnalyzeFileResultTable(t *testing.T) {
 		err = InsertRowToAnalyzeFileResultTable(array[len(array)-1].Id+1, 0, 10, 10, 10, 1)
 		require.Error(t, err, "Something messed up")
 	})
+
+	//TODO: delete added row
 }
 
 func TestGetFileMetadataRows(t *testing.T) {
@@ -104,7 +107,10 @@ func TestGetFileMetadataRow(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotEmpty(t, result)
 	})
+
 }
+
+func TestGetAnalyzeFileResultRows(t *testing.T) {
 	TestInsertRowToAnalyzeFileResultTable(t)
 
 	res, err := GetAllAnalyzeFileResult()
