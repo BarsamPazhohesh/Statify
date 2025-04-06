@@ -287,3 +287,26 @@ func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analy
 		analyzeFileResultTableName,
 		attributeName,
 		attributeValue))
+
+	err = row.Scan(
+		&result.FileMetadata.Id,
+		&result.FileMetadata.Name,
+		&result.FileMetadata.Path,
+		&result.FileMetadata.Dir,
+		&result.FileMetadata.Extension,
+		&result.FileMetadata.Size,
+		&result.FileMetadata.ModifiedAt,
+		&result.Id,
+		&result.Language,
+		&result.CodeSize,
+		&result.CommentSize,
+		&result.BlankLines,
+		&result.TotalSize)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("%v wasn't valid", attributeName)
+			return Analyzer.AnalyzeFileResult{}, err
+		} else {
+			return Analyzer.AnalyzeFileResult{}, err
+		}
+	}
