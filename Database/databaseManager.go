@@ -181,6 +181,7 @@ func GetFileMetadataRows() ([]FileManager.FileMetadata, error) {
 }
 
 func GetFileMetadataRow(attributeName string, attributeValue string) (FileManager.FileMetadata, error) {
+	var result FileManager.FileMetadata
 func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
