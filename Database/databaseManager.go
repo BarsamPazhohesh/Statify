@@ -200,6 +200,10 @@ func GetFileMetadataRow(attributeName string, attributeValue string) (FileManage
 			return FileManager.FileMetadata{}, err
 		}
 	}
+
+	return result, nil
+}
+
 func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
