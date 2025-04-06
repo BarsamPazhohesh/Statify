@@ -188,6 +188,8 @@ func GetFileMetadataRow(attributeName string, attributeValue string) (FileManage
 		return FileManager.FileMetadata{}, err
 	}
 	defer db.Close()
+
+	row := db.QueryRow(fmt.Sprintf("SELECT * FROM %v WHERE %v.%v = '%v'", fileMetadataTableName, fileMetadataTableName, attributeName, attributeValue))
 func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
