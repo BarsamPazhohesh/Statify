@@ -153,7 +153,7 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSiz
 	return nil
 }
 
-func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
+func GetFileMetadataRows() ([]FileManager.FileMetadata, error) {
 	var results []FileManager.FileMetadata
 
 	db, err := sql.Open(driverName, DatabasePath)
@@ -180,7 +180,7 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 	return results, nil
 }
 
-func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
+func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
 	db, err := sql.Open(driverName, DatabasePath)
