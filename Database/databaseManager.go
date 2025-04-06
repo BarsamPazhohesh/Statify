@@ -3,18 +3,21 @@ package Database
 import (
 	"database/sql"
 	"fmt"
+	"time"
+
 	"statfiy/Analyzer"
 	"statfiy/FileManager"
-	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var driverName string
-var DatabasePath string
-var analyzeFileResultTableName string
-var fileMetadataTableName string
-var TimeFormat string
+var (
+	driverName                 string
+	DatabasePath               string
+	analyzeFileResultTableName string
+	fileMetadataTableName      string
+	TimeFormat                 string
+)
 
 type primaryKeyAttribute struct {
 	AttributeName string
@@ -228,7 +231,6 @@ func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 		analyzeFileResultTableName,
 		analyzeFileResultTableName,
 		fileMetadataTableName))
-
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +251,6 @@ func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 			&row.CommentSize,
 			&row.BlankLines,
 			&row.TotalSize)
-
 		if err != nil {
 			return nil, err
 		}
@@ -313,3 +314,6 @@ func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analy
 
 	return result, nil
 }
+
+// TODO seperate functions in files
+// TODO add lazyLoad
