@@ -258,3 +258,5 @@ func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 
 	return results, nil
 }
+
+func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analyzer.AnalyzeFileResult, error) {
