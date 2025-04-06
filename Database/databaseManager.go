@@ -267,3 +267,23 @@ func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analy
 		return Analyzer.AnalyzeFileResult{}, err
 	}
 	defer db.Close()
+
+	row := db.QueryRow(fmt.Sprintf(`
+	SELECT %v.*,
+	%v.id, %v.Language, %v.CodeSize, %v.CommentSize, %v.BlankLines, %v.TotalSize
+	FROM %v JOIN %v ON %v.FileMetadataId = %v.id
+	WHERE %v.%v = '%v'`,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		attributeName,
+		attributeValue))
