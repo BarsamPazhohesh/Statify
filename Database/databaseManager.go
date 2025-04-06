@@ -182,6 +182,12 @@ func GetFileMetadataRows() ([]FileManager.FileMetadata, error) {
 
 func GetFileMetadataRow(attributeName string, attributeValue string) (FileManager.FileMetadata, error) {
 	var result FileManager.FileMetadata
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return FileManager.FileMetadata{}, err
+	}
+	defer db.Close()
 func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
