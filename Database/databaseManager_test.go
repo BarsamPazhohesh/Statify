@@ -119,7 +119,6 @@ func TestGetAnalyzeFileResultRows(t *testing.T) {
 	assert.NotEqual(t, []Analyzer.AnalyzeFileResult{}, res)
 }
 
-	assert.NotEqual(t, expect, res)
 func TestGetAnalyzeFileResultRow(t *testing.T) {
 	metadataArray, err := GetAnalyzeFileResultRows()
 	assert.NoError(t, err)
