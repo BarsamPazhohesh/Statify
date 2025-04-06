@@ -63,8 +63,15 @@ func TestInsertRowToAnalyzeFileResultTable(t *testing.T) {
 
 func TestGetFileMetadataRows(t *testing.T) {
 	TestInsertRowToFileMetadataTable(t)
-	res, _ := GetAllFileMetadata()
-	assert.Equal(t, time.Now().Format(TimeFormat), res[len(res)-1].ModifiedAt.Format(TimeFormat))
+
+	res, err := GetFileMetadataRows()
+	t.Run("Testing", func(t *testing.T) {
+
+		assert.NoError(t, err)
+
+		assert.Equal(t, time.Now().Format(TimeFormat), res[len(res)-1].ModifiedAt.Format(TimeFormat))
+
+	})
 }
 
 func TestGetFileMetadataRow(t *testing.T) {
