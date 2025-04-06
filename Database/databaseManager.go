@@ -3,18 +3,21 @@ package Database
 import (
 	"database/sql"
 	"fmt"
+	"time"
+
 	"statfiy/Analyzer"
 	"statfiy/FileManager"
-	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var driverName string
-var DatabasePath string
-var analyzeFileResultTableName string
-var fileMetadataTableName string
-var TimeFormat string
+var (
+	driverName                 string
+	DatabasePath               string
+	analyzeFileResultTableName string
+	fileMetadataTableName      string
+	TimeFormat                 string
+)
 
 type primaryKeyAttribute struct {
 	AttributeName string
@@ -153,7 +156,7 @@ func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSiz
 	return nil
 }
 
-func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
+func GetFileMetadataRows() ([]FileManager.FileMetadata, error) {
 	var results []FileManager.FileMetadata
 
 	db, err := sql.Open(driverName, DatabasePath)
@@ -180,7 +183,31 @@ func GetAllFileMetadata() ([]FileManager.FileMetadata, error) {
 	return results, nil
 }
 
-func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
+func GetFileMetadataRow(attributeName string, attributeValue string) (FileManager.FileMetadata, error) {
+	var result FileManager.FileMetadata
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return FileManager.FileMetadata{}, err
+	}
+	defer db.Close()
+
+	row := db.QueryRow(fmt.Sprintf("SELECT * FROM %v WHERE %v.%v = '%v'", fileMetadataTableName, fileMetadataTableName, attributeName, attributeValue))
+
+	err = row.Scan(&result.Id, &result.Name, &result.Path, &result.Dir, &result.Extension, &result.Size, &result.ModifiedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("%v wasn't valid", attributeName)
+			return FileManager.FileMetadata{}, err
+		} else {
+			return FileManager.FileMetadata{}, err
+		}
+	}
+
+	return result, nil
+}
+
+func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
 	db, err := sql.Open(driverName, DatabasePath)
@@ -204,7 +231,6 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 		analyzeFileResultTableName,
 		analyzeFileResultTableName,
 		fileMetadataTableName))
-
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +251,6 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 			&row.CommentSize,
 			&row.BlankLines,
 			&row.TotalSize)
-
 		if err != nil {
 			return nil, err
 		}
@@ -234,3 +259,61 @@ func GetAllAnalyzeFileResult() ([]Analyzer.AnalyzeFileResult, error) {
 
 	return results, nil
 }
+
+func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analyzer.AnalyzeFileResult, error) {
+	var result Analyzer.AnalyzeFileResult
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return Analyzer.AnalyzeFileResult{}, err
+	}
+	defer db.Close()
+
+	row := db.QueryRow(fmt.Sprintf(`
+	SELECT %v.*,
+	%v.id, %v.Language, %v.CodeSize, %v.CommentSize, %v.BlankLines, %v.TotalSize
+	FROM %v JOIN %v ON %v.FileMetadataId = %v.id
+	WHERE %v.%v = '%v'`,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		analyzeFileResultTableName,
+		fileMetadataTableName,
+		analyzeFileResultTableName,
+		attributeName,
+		attributeValue))
+
+	err = row.Scan(
+		&result.FileMetadata.Id,
+		&result.FileMetadata.Name,
+		&result.FileMetadata.Path,
+		&result.FileMetadata.Dir,
+		&result.FileMetadata.Extension,
+		&result.FileMetadata.Size,
+		&result.FileMetadata.ModifiedAt,
+		&result.Id,
+		&result.Language,
+		&result.CodeSize,
+		&result.CommentSize,
+		&result.BlankLines,
+		&result.TotalSize)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("%v wasn't valid", attributeName)
+			return Analyzer.AnalyzeFileResult{}, err
+		} else {
+			return Analyzer.AnalyzeFileResult{}, err
+		}
+	}
+
+	return result, nil
+}
+
+// TODO seperate functions in files
+// TODO add lazyLoad
