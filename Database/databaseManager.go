@@ -310,3 +310,6 @@ func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analy
 			return Analyzer.AnalyzeFileResult{}, err
 		}
 	}
+
+	return result, nil
+}
