@@ -113,10 +113,11 @@ func TestGetFileMetadataRow(t *testing.T) {
 func TestGetAnalyzeFileResultRows(t *testing.T) {
 	TestInsertRowToAnalyzeFileResultTable(t)
 
-	res, err := GetAllAnalyzeFileResult()
+	res, err := GetAnalyzeFileResultRows()
 	assert.NoError(t, err)
 
-	expect := []Analyzer.AnalyzeFileResult{}
+	assert.NotEqual(t, []Analyzer.AnalyzeFileResult{}, res)
+}
 
 	assert.NotEqual(t, expect, res)
 }
