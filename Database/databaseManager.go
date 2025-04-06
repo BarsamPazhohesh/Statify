@@ -260,3 +260,4 @@ func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 }
 
 func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analyzer.AnalyzeFileResult, error) {
+	var result Analyzer.AnalyzeFileResult
