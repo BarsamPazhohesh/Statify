@@ -190,6 +190,16 @@ func GetFileMetadataRow(attributeName string, attributeValue string) (FileManage
 	defer db.Close()
 
 	row := db.QueryRow(fmt.Sprintf("SELECT * FROM %v WHERE %v.%v = '%v'", fileMetadataTableName, fileMetadataTableName, attributeName, attributeValue))
+
+	err = row.Scan(&result.Id, &result.Name, &result.Path, &result.Dir, &result.Extension, &result.Size, &result.ModifiedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("%v wasn't valid", attributeName)
+			return FileManager.FileMetadata{}, err
+		} else {
+			return FileManager.FileMetadata{}, err
+		}
+	}
 func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
