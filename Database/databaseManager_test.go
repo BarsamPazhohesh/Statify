@@ -16,10 +16,10 @@ func TestCreateFileMetadataTable(t *testing.T) {
 	require.NoError(t, err, "Something messed up")
 }
 func TestFileMetadataQueryText(t *testing.T) {
-	err := fileMetadataQueryText(fileMetadataTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
+	query := fileMetadataQueryText(fileMetadataTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
 	require.Equal(t,
 		"CREATE TABLE IF NOT EXISTS TblFileMetadata (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \n\tName TEXT, \n\tPath TEXT, \n\tDir TEXT, \n\tExtension TEXT, \n\tSize int, \n\tModifiedAt TIMESTAMP)",
-		err,
+		query,
 		"Something messed up")
 }
 
@@ -28,10 +28,10 @@ func TestCreateAnalyzeFileResultTable(t *testing.T) {
 	require.NoError(t, err, "Something messed up")
 }
 func TestAnalyzeFileResultQueryText(t *testing.T) {
-	err := analyzeFileResultQueryText(analyzeFileResultTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
+	query := analyzeFileResultQueryText(analyzeFileResultTableName, primaryKeyAttribute{AttributeName: "id", Type: "INTEGER"})
 	require.Equal(t,
 		"CREATE TABLE IF NOT EXISTS TblAnalyzeFileResult (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, FileMetadataId INTEGER, Language INTEGER, CodeSize INTEGER, CommentSize INTEGER, BlankLines INTEGER, TotalSize INTEGER, FOREIGN KEY (FileMetadataId) REFERENCES TblFileMetadata(id))",
-		err,
+		query,
 		"Something messed up")
 }
 
