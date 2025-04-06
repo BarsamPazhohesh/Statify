@@ -47,11 +47,18 @@ func TestInsertRowToAnalyzeFileResultTable(t *testing.T) {
 	TestCreateAnalyzeFileResultTable(t)
 	TestInsertRowToFileMetadataTable(t)
 
-	err := InsertRowToAnalyzeFileResultTable(1, 0, 10, 10, 10, 5)
-	require.NoError(t, err, "Something messed up")
+	array, err := GetFileMetadataRows()
+	assert.NoError(t, err)
 
-	err = InsertRowToAnalyzeFileResultTable(6, 0, 10, 10, 10, 5)
-	require.Error(t, err, "Something messed up")
+	t.Run("Test1", func(t *testing.T) {
+		err = InsertRowToAnalyzeFileResultTable(array[0].Id, 0, 10, 10, 10, 1)
+		require.NoError(t, err, "Something messed up")
+	})
+
+	t.Run("Test2", func(t *testing.T) {
+		err = InsertRowToAnalyzeFileResultTable(array[len(array)-1].Id+1, 0, 10, 10, 10, 1)
+		require.Error(t, err, "Something messed up")
+	})
 }
 
 func TestGetAllFileMetadata(t *testing.T) {
