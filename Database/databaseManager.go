@@ -261,3 +261,9 @@ func GetAnalyzeFileResultRows() ([]Analyzer.AnalyzeFileResult, error) {
 
 func GetAnalyzeFileResultRow(attributeName string, attributeValue string) (Analyzer.AnalyzeFileResult, error) {
 	var result Analyzer.AnalyzeFileResult
+
+	db, err := sql.Open(driverName, DatabasePath)
+	if err != nil {
+		return Analyzer.AnalyzeFileResult{}, err
+	}
+	defer db.Close()
