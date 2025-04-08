@@ -1,3 +1,11 @@
+package Database
+
+import (
+	"database/sql"
+	"fmt"
+	"time"
+)
+
 func InsertRowToFileMetadataTable(name, path, dir, extension string, size int, modifiedAt time.Time) error {
 	db, err := sql.Open(driverName, DatabasePath)
 	if err != nil {
