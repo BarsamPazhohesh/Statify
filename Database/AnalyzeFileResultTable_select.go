@@ -1,3 +1,11 @@
+package Database
+
+import (
+	"database/sql"
+	"fmt"
+	"statfiy/Analyzer"
+)
+
 func GetAnalyzeFileResultTableRows() ([]Analyzer.AnalyzeFileResult, error) {
 	var results []Analyzer.AnalyzeFileResult
 
