@@ -1,3 +1,11 @@
+package Database
+
+import (
+	"database/sql"
+	"fmt"
+	"statfiy/FileManager"
+)
+
 func GetFileMetadataTableRows() ([]FileManager.FileMetadata, error) {
 	var results []FileManager.FileMetadata
 
