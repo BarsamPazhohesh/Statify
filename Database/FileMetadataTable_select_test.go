@@ -1,3 +1,13 @@
+package Database
+
+import (
+	"fmt"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
+)
+
 func TestGetFileMetadataTableRows(t *testing.T) {
 	TestInsertRowToFileMetadataTable(t)
 

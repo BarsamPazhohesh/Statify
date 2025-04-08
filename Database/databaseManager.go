@@ -1,13 +1,6 @@
 package Database
 
 import (
-	"database/sql"
-	"fmt"
-	"time"
-
-	"statfiy/Analyzer"
-	"statfiy/FileManager"
-
 	_ "github.com/mattn/go-sqlite3"
 )
 
