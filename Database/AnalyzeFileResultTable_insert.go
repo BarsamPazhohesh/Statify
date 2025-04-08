@@ -1,3 +1,10 @@
+package Database
+
+import (
+	"database/sql"
+	"fmt"
+)
+
 func InsertRowToAnalyzeFileResultTable(fileMetadataId int, language int, codeSize, commentSize, blankLines, total int) error {
 	db, err := sql.Open(driverName, DatabasePath)
 	if err != nil {
