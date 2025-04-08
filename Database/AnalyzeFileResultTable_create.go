@@ -1,3 +1,10 @@
+package Database
+
+import (
+	"database/sql"
+	"fmt"
+)
+
 func createAnalyzeFileResultTable() error {
 	db, err := sql.Open(driverName, DatabasePath)
 	if err != nil {
