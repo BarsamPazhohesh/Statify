@@ -22,6 +22,7 @@ func CreateMermaidPieChart(config MermaidPieChartConfig) error {
 	outputPath := config.OutputPath
 
 	builder := strings.Builder{}
+	builder.WriteString("```mermaid\n")
 	builder.WriteString("%%{\n  init: {\n    \"themeVariables\": {\n")
 
 	for i, item := range data {
@@ -39,5 +40,6 @@ func CreateMermaidPieChart(config MermaidPieChartConfig) error {
 		builder.WriteString(fmt.Sprintf("  \"%s\": %f\n", item.Label, item.Value))
 	}
 
+	builder.WriteString("```\n")
 	return FileManager.OverwriteFileString(outputPath, builder.String())
 }
