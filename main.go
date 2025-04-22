@@ -15,7 +15,7 @@ import (
 // Usage examples:
 // 1. Multiple root paths: `go run . -p /path1 -p /path2`
 // 2. Include comments: `go run . -ic -p /path`
-// 3. Specify output path: `go run . -op /output/path -p /path` (has bug)
+// 3. Specify output path: `go run . -op /output/path -p /path`
 // 4. Help message: `go run . -h`
 func main() {
 	args, err := ArgManager.ParseArgs(os.Args)
@@ -23,32 +23,47 @@ func main() {
 		log.Fatalf("Error parsing arguments: %v", err)
 	}
 
-	// fmt.Println(args.OutputPath)
-	// Set default output path to "./analyzed" if not specified by user.
-	// This OutputPath has bug i will fix later :)
-	// TODO : Fix OutputPath Bug
-	if !args.OutputPath.IsSet {
-		args.OutputPath.Value = filepath.Join(FileManager.GetProgramSourceDir(), "analyzed")
+	// Set default output path or use the provided one
+	if !args.OutputPaths.IsSet || len(args.OutputPaths.Value) == 1 {
+		outputPath := "analyzed"
+		if len(args.OutputPaths.Value) == 1 {
+			outputPath = args.OutputPaths.Value[0]
+			args.OutputPaths.Value = []string{}
+		}
+
+		// Generate output paths for each root path
+		for _, rootPath := range args.RootPaths {
+			absPath, err := FileManager.GetAbsolutePath(rootPath)
+			if err != nil {
+				log.Fatalf("Invalid path '%s': %v", rootPath, err)
+			}
+
+			baseName := filepath.Base(absPath)
+			args.OutputPaths.Value = append(args.OutputPaths.Value, filepath.Join(outputPath, baseName))
+		}
 	}
 
-	// Analyze each provided root path
-	for _, path := range args.RootPaths {
-		processPath(path, args.OutputPath.Value, args.IncludeComment)
+	// Ensure the number of output paths matches the number of root paths
+	if len(args.OutputPaths.Value) != len(args.RootPaths) {
+		log.Fatal("If you provide more than one output path, the number of root paths and output paths must match.")
+	}
+
+	// Process each root path with the corresponding output path
+	for i, rootPath := range args.RootPaths {
+		outputPath := args.OutputPaths.Value[i]
+		absPath, err := FileManager.GetAbsolutePath(rootPath)
+		if err != nil {
+			log.Fatalf("Invalid path '%s': %v", rootPath, err)
+		}
+		processPath(absPath, outputPath, args.IncludeComment)
 	}
 }
 
 // processPath handles the analysis of a single root path.
 func processPath(rootPath, outputBase string, includeComment bool) {
-	// Resolve absolute path
-	absPath, err := FileManager.GetAbsolutePath(rootPath)
-	if err != nil {
-		log.Fatalf("Invalid path: %v", err)
-	}
 
-	// Create output directories for images and markdown files
-	baseName := filepath.Base(absPath)
-	imagesPath := filepath.Join(outputBase, baseName, "images")
-	mdFilesPath := filepath.Join(outputBase, baseName, "mds")
+	imagesPath := filepath.Join(outputBase, "images")
+	mdFilesPath := filepath.Join(outputBase, "mds")
 
 	createDirectoryOrExit(imagesPath)
 	createDirectoryOrExit(mdFilesPath)
@@ -66,7 +81,7 @@ func processPath(rootPath, outputBase string, includeComment bool) {
 	}
 
 	// Generate markdown report for analyzed files
-	createAnalysisReport(absPath, analyzedFiles, mdFilesPath)
+	createAnalysisReport(rootPath, analyzedFiles, mdFilesPath)
 
 	// Calculate language distribution and generate charts
 	langDistributions := Analyzer.CalculateLanguagePercentages(analyzedFiles, includeComment)

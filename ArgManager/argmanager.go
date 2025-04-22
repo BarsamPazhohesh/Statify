@@ -9,25 +9,10 @@ type OptionalArg[T any] struct {
 	IsSet bool
 }
 
-// newOptionalArg returns an OptionalArg with the value from the flag if set, or the defaultValue otherwise.
-func newOptionalArg[T any](ctx *cli.Context, flagName string, defaultValue T) OptionalArg[T] {
-	val := ctx.Generic(flagName)
-	if val == nil {
-		return OptionalArg[T]{Value: defaultValue, IsSet: false}
-	}
-
-	typedVal, ok := val.(T)
-	if !ok {
-		return OptionalArg[T]{Value: defaultValue, IsSet: false}
-	}
-
-	return OptionalArg[T]{Value: typedVal, IsSet: true}
-}
-
 type Args struct {
 	RootPaths      []string
 	IncludeComment bool
-	OutputPath     OptionalArg[string]
+	OutputPaths    OptionalArg[[]string]
 }
 
 // ParseArgs parses command-line arguments and returns an Args struct.
@@ -46,7 +31,7 @@ func ParseArgs(arguments []string) (*Args, error) {
 				Aliases: []string{"ic"},
 				Usage:   "Include comments in the analysis",
 			},
-			&cli.StringFlag{
+			&cli.StringSliceFlag{
 				Name:    "output-path",
 				Aliases: []string{"op"},
 				Usage:   "Specify output path where images and markdown file are stored",
@@ -55,7 +40,7 @@ func ParseArgs(arguments []string) (*Args, error) {
 		Action: func(ctx *cli.Context) error {
 			args.RootPaths = ctx.StringSlice("paths")
 			args.IncludeComment = ctx.Bool("include-comment")
-			args.OutputPath = newOptionalArg(ctx, "output-path", "")
+			args.OutputPaths = parseOutputPath(ctx)
 
 			return nil
 		},
@@ -66,4 +51,12 @@ func ParseArgs(arguments []string) (*Args, error) {
 	}
 
 	return &args, nil
+}
+
+func parseOutputPath(ctx *cli.Context) OptionalArg[[]string] {
+	values := ctx.StringSlice("output-path")
+	return OptionalArg[[]string]{
+		IsSet: len(values) > 0,
+		Value: values,
+	}
 }
